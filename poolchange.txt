@@ -1,0 +1,88 @@
+when HTTP_REQUEST {
+    if {[HTTP::has_responded]} { return }
+
+    switch [string tolower [HTTP::host]] {
+        "portal-erpdata.polarismedia.no" {
+            pool pool_regnskapsportal
+        }
+        "airflow-erpdata.polarismedia.no" {
+            pool pool_airflow
+        }
+        "dashboard-erpdata.polarismedia.no" {
+            pool pool_dashboard
+        
+        }
+    }
+}
+
+when HTTP_REQUEST {
+    if {[HTTP::has_responded]} {
+        log local0. "HTTP request already responded to. Skipping iRule processing."
+        return
+    }
+
+    set host [string tolower [HTTP::host]]
+    log local0. "Received request with Host header: $host"
+
+    switch $host {
+        "portal-erpdata.polarismedia.no" {
+            log local0. "Routing to pool: pool_regnskapsportal"
+            pool pool_regnskapsportal
+        }
+        "airflow-erpdata.polarismedia.no" {
+            log local0. "Routing to pool: pool_airflow"
+            pool pool_airflow
+        }
+        "dashboard-erpdata.polarismedia.no" {
+            log local0. "Routing to pool: pool_dashboard"
+            pool pool_dashboard
+        }
+        default {
+            log local0. "No matching host found for: $host"
+            # Optionally send to a default pool or return an error
+            # pool default_pool
+            # or
+            # reject
+        }
+    }
+}
+
+
+
+when HTTP_REQUEST {
+
+    if { ( [HTTP::method] equals "POST"  &&  ([class match [IP::client_addr] eq "webhooks_github"]  || [class match [IP::client_addr] eq "Allowed_internal_ip"]) || [IP::client_addr] eq "194.19.36.65" ) } {
+        log local0. "hepp Argo Post valid [IP::client_addr] "
+    } else { 
+        log local0. " hepp Argo Post not valid [IP::client_addr]"
+        reject
+    }
+
+    switch  [string tolower [HTTP::host]] {
+        "argo-prod1-dora.fnatt.no" {
+            pool CLUSTER_PROD1_30080
+        }
+        "argo-prod2-dora.fnatt.no" {
+            pool CLUSTER_PROD2_30080
+        }
+        "argo-acc1-dora.fnatt.no" {
+            pool CLUSTER_ACC1_30080
+        }
+        "argo-acc2-dora.fnatt.no" {
+            pool CLUSTER_ACC2_30080
+        }
+        "argo-tullerundt1-dora.fnatt.no" {
+            pool CLUSTER_TULLERUNDT1
+        }
+    }
+}
+
+when LB_SELECTED {
+    log local0. " hepp LB INFO -  Pool: [LB::server]]"
+}
+
+
+
+Logging:
+
+tail -f /var/log/ltm | grep -i "routing to pool"

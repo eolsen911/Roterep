@@ -1,0 +1,44 @@
+
+
+
+
+Vi bruker ftp.adressa.no fortsatt for VEV
+Flyttes til ny ftp server.
+
+For at det skal fungere må noe lignende gjøres som det er gjort på ftp.adressa.no
+crontab som ligger på server ftp.adressa.no
+
+/usr/bin/rsync -avz --remove-source-files -e "ssh -i /root/.ssh/ftp-rysnc-key" /ftp/vev/ idrift@192.168.101.118:/idrift/static/VEV 
+
+
+
+
+192.168.101.118= prod-ece-aggr1.adresseavisen.no
+
+
+🔹 Install WinSCP on Windows.
+Create a script like:
+
+ini
+
+option batch on
+option confirm off
+open sftp://idrift@192.168.101.10/ -privatekey="C:\Keys\ftp-rysnc-key.ppk"
+get /ftp/vev/* C:\idrift\static\VEV\
+rm /ftp/vev/*
+close
+exit
+Then run it:
+
+bash
+
+winscp.com /script=transfer.txt
+This:
+
+Connects to the Linux server using SSH key
+
+Downloads files from /ftp/vev/
+
+Deletes them from the source after transfer
+
+🛠 Convert your .pem key to .ppk using PuTTYgen if needed.
