@@ -1,0 +1,1 @@
+microk8s kubectl drain tullerundt-w3 --ignore-daemonsets --delete-emptydir-data
