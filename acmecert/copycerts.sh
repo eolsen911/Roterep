@@ -2,11 +2,12 @@
 
 # Define source and destination pairs
 declare -A paths=(
-  ["/home/eolsen/acmecerts/k8sfnatt/cert.p12"]="/home/erik/acmecerts/k8sfnatt/"
-  ["/home/eolsen/acmecerts/other/cert.p12"]="/home/erik/acmecerts/other/"
-  ["/home/eolsen/acmecerts/polarismedia/cert.p12"]="/home/erik/acmecerts/polarismedia/"
-  ["/home/eolsen/acmecerts/prsubdomain1/cert.p12"]="/home/erik/acmecerts/prsubdomain1/"
-  ["/home/eolsen/acmecerts/prsubdomain2/cert.p12"]="/home/erik/acmecerts/prsubdomain2/"
+  ["/opt/certs/k8sfnatt/cert.p12"]="/home/erik/acmecerts/k8sfnatt/"
+  ["/opt/certs/other/cert.p12"]="/home/erik/acmecerts/other/"
+  ["/opt/certs/polarismedia/cert.p12"]="/home/erik/acmecerts/polarismedia/"
+  ["/opt/certs/prsubdomain1/cert.p12"]="/home/erik/acmecerts/prsubdomain1/"
+  ["/opt/certs/prsubdomain2/cert.p12"]="/home/erik/acmecerts/prsubdomain2/"
+  ["/opt/certs/stampen/cert.p12"]="/home/erik/acmecerts/stampen/"
 )
 
 remote="eolsen@it-devops-1.adresseavisen.no"

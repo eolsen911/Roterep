@@ -6,5 +6,5 @@ while true; do
     echo "Pinging $ip..."
     ping -c 1 "$ip"
   done
-  sleep 1  # Optional: wait 1 second between each full sweep
+  # sleep 1  # Optional: wait 1 second between each full sweep
 done
