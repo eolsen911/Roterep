@@ -1,6 +1,5 @@
-#!/bin/bash
+##!/bin/bash
 
-# Define source and destination pairs
 declare -A paths=(
   ["/opt/certs/k8sfnatt/cert.p12"]="/home/erik/acmecerts/k8sfnatt/"
   ["/opt/certs/other/cert.p12"]="/home/erik/acmecerts/other/"
@@ -15,6 +14,9 @@ remote="eolsen@it-devops-1.adresseavisen.no"
 for src in "${!paths[@]}"; do
   dest="${paths[$src]}"
   file="$dest/cert.p12"
+
+  # Remotely set ownership to eolsen on the source file (requires sudo privileges for eolsen)
+  ssh "$remote" "sudo chown eolsen '$src'"
 
   # If cert.p12 already exists, rename it with a timestamp
   if [ -f "$file" ]; then
