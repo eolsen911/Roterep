@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-pod2
+  name: db-pod
 spec:
   containers:
     - name: app
       image: busybox
       command: ["sh", "-c", "sleep 3600"]
       volumeMounts:
-        - name: data
-          mountPath: /data
+        - mountPath: /data
+          name: storage
       resources:
         requests:
           memory: "64Mi"
@@ -17,11 +17,7 @@ spec:
         limits:
           memory: "128Mi"
           cpu: "200m"
-        volumeMounts:
-        - name: data2
-          mountPath: /data2
-        
   volumes:
-    - name: data
+    - name: storage
       persistentVolumeClaim:
-        claimName: test-pvc
+        claimName: db-pvc
