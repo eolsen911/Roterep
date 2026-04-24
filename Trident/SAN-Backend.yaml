@@ -1,0 +1,14 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: ontap-san-backend
+  namespace: trident
+spec:
+  version: 1
+  backendName: san-backend-iscsi
+  storageDriverName: ontap-san
+  santype: iscsi
+  managementLIF: 172.24.32.33
+  svm: svm_k8s
+  credentials:
+    name: ontap-nas-secret

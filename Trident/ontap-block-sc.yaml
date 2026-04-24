@@ -6,5 +6,6 @@ provisioner: csi.trident.netapp.io
 parameters:
   backendType: "ontap-san"
 fsType: ext4
+santype: "iscsi"
 allowVolumeExpansion: true
-volumeBindingMode: WaitForFirstConsumer
+volumeBindingMode: Immediate
