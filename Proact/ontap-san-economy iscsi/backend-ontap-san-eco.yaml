@@ -1,0 +1,17 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: backend-ontap-san-economy
+  namespace: <tridentnamespace>
+spec:
+  version: 1
+  backendName: san-economy
+  storageDriverName: ontap-san-economy
+  managementLIF: <ip of svm mgmt lif>
+  useRest: false
+  sanType: iscsi
+# nametemplates are facing a bug in current releases, only enable if you don't need snapshots or clones. to be fixed in 26.02
+#  defaults:
+#    nameTemplate: "{{ .volume.Name }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
+  credentials:
+    name: secret-svm

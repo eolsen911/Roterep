@@ -1,0 +1,35 @@
+# Create SVM
+# For Metrocluster_ Set the subtype parameter to “sync-source” (instead of default)
+vserver create -vserver <SVM Name> -subtype default -rootvolume <Root Volume Name> -aggregate <Aggregate Name> -rootvolume-security-style unix -language en.UTF-8 -snapshot-policy default
+# Set QoS Limit (in this example 10000 IOPS, 200MB/s)
+qos policy-group create -policy-group <Policy Group Name> -vserver <SVM Name> -max-throughput 10000iops,200m
+vserver modify -vserver <SVM Name> -qos-policy-group <Policy Group Name>
+# Assing an aggregate (Trident can only provision volumes on the assigned aggregate)
+vserver add-aggregates -vserver <SVM Name> -aggregates <Aggregat Name/List>
+# Limit the number of volumes (in this example to 200)
+vserver modify -vserver <SVM Name> -max-volumes 200
+# Switch to advanced mode to create a new service policy (replacing the LIF role in 9.6 and beyond)
+set advanced
+# Create new service policy that contains data and API/HTTPS services
+network interface service-policy create -vserver <SVM Name> -policy management-data -allowed-addresses 0.0.0.0/0 -services data-core,data-nfs,management-https
+# Create a network interface (LIF) & configure the default gateway
+net int create -vserver <SVM Name> -lif <LIF Name> -data-protocol nfs -home-node <Node Name> -home-port <Port Name> -address <IP address> -netmask 255.255.0.0 -status-admin up -failover-policy system-defined -service-policy management-data -firewall-policy mgmt-nfs 
+route create –vserver <SVM Name> -destination 0.0.0.0/0 –gateway <Default Gateway IP address>
+# Create export policy, read-only to allow traversing namespace root volume (if NFS is used)
+export-policy rule create –vserver <SVM Name> -policyname default -clientmatch <Subnet Kubernetes Nodes> -rorule any -rwrule none –superuser none 
+# Create a service account for Trident (Limits access to the SVM and to API calls).
+security login create -vserver <SVM Name> -user-or-group-name trident -application ontapi -authentication-method password –role vsadmin
+security login create -vserver <SVM Name> -user-or-group-name trident -application http -authentication-method password –role vsadmin
+# Start and Configure NFS server (only if NFS is used)
+nfs create -vserver <SVM Name>
+nfs modify -vserver <SVM Name> -showmount disabled –v3-hide-snapshot enabled
+# Start iSCSI Server and add iSCSI LIFs – one per node in the HA pair (only if iSCSI is used)
+iscsi create -vserver <SVM Name> 
+net int create -vserver <SVM Name> -lif <LIF Name> -data-protocol iscsi -service-policy default-data-iscsi -home-node <Node 1 Name> -address <IP address 1> -netmask <Netmask> -home-port <Port Name> -status-admin up -failover-policy disabled -firewall-policy data
+net int create -vserver <SVM Name> -lif <LIF Name> -data-protocol iscsi -service-policy default-data-iscsi -home-node <Node 2 Name> -address <IP address 2> -netmask <Netmask> -home-port <Port Name> -status-admin up -failover-policy disabled -firewall-policy data 
+# Capacity limit with Ontap 9.13.1P3 and higher (not yet available on Metrocluster)
+vserver modify -vserver <SVM Name> -storage-limit 800g
+
+# add any additional configuration such as snapshot policies
+
+

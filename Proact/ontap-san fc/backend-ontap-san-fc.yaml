@@ -1,0 +1,17 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: backend-ontap-san-fc
+  namespace: <tridentnamespace>
+spec:
+  version: 1
+  backendName: backend-san-fc
+  useRest: false
+# fc only supports ontap-san today, no economy driver possible.
+  storageDriverName: ontap-san
+  sanType: fcp
+  managementLIF: <ip of svm mgmt lif>
+  defaults:
+    nameTemplate: "{{ .volume.Name }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
+  credentials:
+    name: secret-svm

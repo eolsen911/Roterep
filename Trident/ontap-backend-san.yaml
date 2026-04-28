@@ -9,6 +9,8 @@ spec:
   storageDriverName: ontap-san
   santype: iscsi
   managementLIF: 172.24.32.33
-  svm: svm_k8s
+  defaults:
+    nameTemplate: "{{ .volume.Name }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
+  svm: PM_trident_K8s
   credentials:
     name: ontap-nas-secret
