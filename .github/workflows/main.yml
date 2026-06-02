@@ -23,11 +23,11 @@ jobs:
           VARNISH_USER: ${{ secrets.VARNISH_USER }}
           VARNISH_HOST: ${{ secrets.VARNISH_HOST }}
           VARNISH_PATH: ${{ secrets.VARNISH_PATH }}
-          VARNISH_SSH_KEY: ${{ secrets.VARNISH_SSH_KEY }}
+          VARNISH_SSH_PRIVATE_KEY: ${{ secrets.VARNISH_SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$VARNISH_SSH_KEY" > ~/.ssh/id_ed25519
+          echo "$VARNISH_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "$VARNISH_HOST" >> ~/.ssh/known_hosts
 
