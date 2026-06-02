@@ -1,0 +1,7 @@
+-name: copy generated files
+env:
+          VARNISH_USER: ${{ secrets.VARNISH_USER }}
+          VARNISH_HOST: ${{ secrets.VARNISH_HOST }}
+          VARNISH_PATH: ${{ secrets.VARNISH_PATH }}
+        
+          run: scp -r generated/* ${{ secrets.VARNISH_USER }}@${{ secrets.VARNISH_HOST }}:${{ secrets.VARNISH_PATH }}
