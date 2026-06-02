@@ -16,9 +16,9 @@ for src_dir in "${source_dirs[@]}"; do
     echo "Setting file permissions for $src_dir"
     sudo chmod -R a+w  "$src_dir"
 
-    # Determine corresponding destination under /home/eolsen/
+    # Determine corresponding destination under /home/eolsen/acmecerts
     base_name=$(basename "$src_dir")
-    dest_dir="/home/eolsen/$base_name"
+    dest_dir="/home/eolsen/acmecerts/$base_name"
 
     # Create destination directory if it doesn't exist
     mkdir -p "$dest_dir"

@@ -1,7 +1,19 @@
--name: copy generated files
-env:
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy generated files
+        env:
           VARNISH_USER: ${{ secrets.VARNISH_USER }}
           VARNISH_HOST: ${{ secrets.VARNISH_HOST }}
           VARNISH_PATH: ${{ secrets.VARNISH_PATH }}
-        
-          run: scp -r generated/* ${{ secrets.VARNISH_USER }}@${{ secrets.VARNISH_HOST }}:${{ secrets.VARNISH_PATH }}
+        run: |
+          scp -i ~/.ssh/id_ed25519 -r generated/. \
+            "${VARNISH_USER}@${VARNISH_HOST}:${VARNISH_PATH}"

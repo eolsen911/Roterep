@@ -18,12 +18,13 @@ for src in "${!paths[@]}"; do
   # Make sure destination exists
   mkdir -p "$dest"
 
-  # Rename all existing files in destination by appending a timestamp
+  # Rename all existing files in destination by appending a timestamp and move to backup directory
   for file in "$dest"*; do
     if [ -f "$file" ]; then
       base=$(basename "$file")
-      mv "$file" "$dest/${base}_backup_$timestamp"
-      echo "Renamed $file to $dest/${base}_backup_$timestamp"
+      mkdir -p "$dest/backup"
+      mv "$file" "$dest/backup/${base}_backup_$timestamp"
+      echo "Renamed $file to $dest/backup/${base}_backup_$timestamp"
     fi
   done
 

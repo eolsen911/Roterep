@@ -11,6 +11,6 @@ spec:
   managementLIF: 172.24.32.33
   defaults:
     nameTemplate: "{{ .volume.Name }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
-  svm: PM_trident_K8s
+  svm: PM_trident_k8s
   credentials:
     name: ontap-nas-secret
