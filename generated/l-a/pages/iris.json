@@ -1,0 +1,1 @@
+{"id":"fallback-article","access":{"restrictions":["false"]},"compositions":[{"name":"narrow","areas":[{"name":"main","items":[]}]}],"items":{},"links":{"permalink":"https://www.l-a.no/index.html","shareUrl":"https://www.l-a.no/index.html","canonicalUrl":"https://www.l-a.no/index.html"},"requires":["rule:always-web-render"]}
